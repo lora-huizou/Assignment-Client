@@ -70,6 +70,7 @@ public class MultiThreadsClient1 {
         totalTimeSeconds,
         TOTAL_REQUESTS, INITIAL_THREADS, REQUESTS_PER_THREAD, LIFT_RIDE_QUEUE_SIZE
     );
+    ReportPrinter.calculateThroughputFromMetrics(metricsList, "throughput_data.csv");
 
   }
 

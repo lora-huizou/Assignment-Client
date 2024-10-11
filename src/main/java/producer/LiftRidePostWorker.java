@@ -22,7 +22,7 @@ public class LiftRidePostWorker implements Runnable{
     // Create a new ApiClient and SkiersApi instance for each thread
     ApiClient client = new ApiClient();
     // EC2
-    client.setBasePath("http://35.93.129.33:8080/JavaServlets_war");
+    client.setBasePath("http://35.85.155.207:8080/JavaServlets_war");
     // Localhost
     //client.setBasePath("http://localhost:8080/JavaServlets_war_exploded");
     //client.setBasePath("http://localhost:8080"); // used to test run local springboot server

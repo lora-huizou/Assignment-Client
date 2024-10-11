@@ -4,6 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import model.RequestPerformanceMetric;
 
@@ -68,6 +70,24 @@ public class ReportPrinter {
   private static double calculateThroughput(int totalRequests, double totalTimeSeconds) {
     return totalRequests / totalTimeSeconds;
   }
+  public static void calculateThroughputFromMetrics(List<RequestPerformanceMetric> metricsList, String fileName) {
+    Map<Long, Integer> throughputPerSecond = new TreeMap<>();
+    // Group metrics by second and count requests
+    for (RequestPerformanceMetric metric : metricsList) {
+      long second = metric.getEndTime() / 1000;
+      throughputPerSecond.put(second, throughputPerSecond.getOrDefault(second, 0) + 1);
+    }
 
-
+    try (FileWriter writer = new FileWriter(fileName)) {
+      writer.append("Time,Throughput\n");
+      long timeCounter = 1;
+      for (Map.Entry<Long, Integer> entry : throughputPerSecond.entrySet()) {
+        writer.append(timeCounter + "," + entry.getValue() + "\n");
+        timeCounter++;
+      }
+      System.out.println("Throughput data successfully written to " + fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

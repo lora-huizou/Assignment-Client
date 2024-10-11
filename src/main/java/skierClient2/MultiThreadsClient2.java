@@ -72,7 +72,7 @@ public class MultiThreadsClient2 {
     );
     ReportPrinter.printDetailResult(metricsList);
     ReportPrinter.writeMetricsToCSV("request_metrics.csv", metricsList);
-
+    ReportPrinter.calculateThroughputFromMetrics(metricsList, "throughput_data.csv");
   }
 
 }
