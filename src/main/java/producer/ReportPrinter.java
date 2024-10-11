@@ -9,13 +9,19 @@ import model.RequestPerformanceMetric;
 
 public class ReportPrinter {
   public static void printBasicResult(AtomicInteger successfulRequests, AtomicInteger failedRequests,
-      double totalTimeSeconds, int totalRequests) {
-    System.out.println("--- Execution Summary for Part 2 ---");
+      double totalTimeSeconds, int totalRequests, int initialThread, int requestPerThread,
+      int liftRideQueueSize) {
+    System.out.println("--- Execution Summary for Part 1 ---");
     System.out.println("Number of successful requests: " + successfulRequests);
     System.out.println("Number of failed requests: " + failedRequests);
-    System.out.println("Total run time in seconds: " + totalTimeSeconds);
+    System.out.println("Total run/wall time in seconds: " + totalTimeSeconds);
     System.out.println("Throughput (requests/second): " + calculateThroughput(totalRequests, totalTimeSeconds));
     System.out.println("-------------------------------------");
+    System.out.println("Client Configuration:");
+    System.out.println("Initial Threads: " + initialThread);
+    System.out.println("Requests per Thread: " + requestPerThread);
+    System.out.println("Total Requests: " + totalRequests);
+    System.out.println("Lift Ride Queue Size: " + liftRideQueueSize);
   }
 
   public static void printDetailResult(List<RequestPerformanceMetric> metricsList) {

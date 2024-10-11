@@ -6,8 +6,8 @@ import io.swagger.client.api.SkiersApi;
 import io.swagger.client.model.LiftRide;
 
 public class SingleThreadLatencyTest {
-  //private static final String BASE_URL = "http://35.91.96.75:8080/JavaServlets_war";
-  private static final String BASE_URL = "http://localhost:8080/JavaServlets_war_exploded";
+  private static final String BASE_URL = "http://35.93.129.33:8080/JavaServlets_war";
+  //private static final String BASE_URL = "http://localhost:8080/JavaServlets_war_exploded";
   //private static final String BASE_URL = "http://localhost:8080"; // for local springboot server
   private static final int TOTAL_REQUESTS = 10_000;
 
