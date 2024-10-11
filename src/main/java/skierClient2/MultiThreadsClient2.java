@@ -30,7 +30,6 @@ public class MultiThreadsClient2 {
     RequestCounter requestCounter = new RequestCounter();
     List<RequestPerformanceMetric> metricsList = new ArrayList<>();
 
-
     // Start the data generator thread
     Thread dataGenerator = new Thread(new LiftRideGenerator(eventQueue, TOTAL_REQUESTS));
     dataGenerator.start();

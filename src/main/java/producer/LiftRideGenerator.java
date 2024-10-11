@@ -13,7 +13,6 @@ public class LiftRideGenerator implements Runnable {
   private final BlockingQueue<LiftRideEvent> queue;
   private final int totalRequests;
 
-
   @Override
   public void run() {
     int generatedCount = 0;
