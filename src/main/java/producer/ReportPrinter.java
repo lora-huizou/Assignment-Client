@@ -12,7 +12,7 @@ import model.RequestPerformanceMetric;
 public class ReportPrinter {
   public static void printBasicResult(AtomicInteger successfulRequests, AtomicInteger failedRequests,
       double totalTimeSeconds, int totalRequests, int initialThread, int requestPerThread,
-      int liftRideQueueSize) {
+      int liftRideQueueSize, int subsequentThread) {
     System.out.println("--- Execution Summary for Part 1 ---");
     System.out.println("Number of successful requests: " + successfulRequests);
     System.out.println("Number of failed requests: " + failedRequests);
@@ -21,6 +21,7 @@ public class ReportPrinter {
     System.out.println("-------------------------------------");
     System.out.println("Client Configuration:");
     System.out.println("Initial Threads: " + initialThread);
+    System.out.println("Subsequent Threads: " + subsequentThread);
     System.out.println("Requests per Thread: " + requestPerThread);
     System.out.println("Total Requests: " + totalRequests);
     System.out.println("Lift Ride Queue Size: " + liftRideQueueSize);

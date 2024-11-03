@@ -17,15 +17,17 @@ public class LiftRidePostWorker implements Runnable{
   private final int numRequests;
   private final RequestCounter requestCounter;
   private List<RequestPerformanceMetric> metricsList;
+  //private static final String BASE_URL = "albtest-1689042117.us-west-2.elb.amazonaws.com";
+
+  //private static final String BASE_URL = "http://localhost:8080/JavaServlets_war_exploded";
+  private static final String BASE_URL = "http://52.36.116.111:8080/JavaServlets_war"; // ec2
+  //private static final String BASE_URL = "http://localhost:8080"; // local springboot server
+
 
   public void run() {
     // Create a new ApiClient and SkiersApi instance for each thread
     ApiClient client = new ApiClient();
-    // EC2
-    client.setBasePath("http://35.85.155.207:8080/JavaServlets_war");
-    // Localhost
-    //client.setBasePath("http://localhost:8080/JavaServlets_war_exploded");
-    //client.setBasePath("http://localhost:8080"); // used to test run local springboot server
+    client.setBasePath(BASE_URL);
     SkiersApi api = new SkiersApi(client);
     for (int i = 0; i < numRequests; i++) {
       try {

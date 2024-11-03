@@ -18,8 +18,10 @@ public class MultiThreadsClient2 {
 
   private static final int TOTAL_REQUESTS = 200_000;
   private static final int INITIAL_THREADS = 32;
-  private static final int MAXIMUM_THREADS = 64;
+  private static final int MAXIMUM_THREADS = 200;
   private static final int REQUESTS_PER_THREAD = 1000;
+  private static final int REMAINING_THREADS = 84;
+  private static final int REQUESTS_PER_REMAINING_THREAD = 2000;
   private static final int LIFT_RIDE_QUEUE_SIZE = 50_000; // adjust it base on performance
 
   /**
@@ -29,13 +31,14 @@ public class MultiThreadsClient2 {
     BlockingQueue<LiftRideEvent> eventQueue = new ArrayBlockingQueue<>(LIFT_RIDE_QUEUE_SIZE);
     RequestCounter requestCounter = new RequestCounter();
     List<RequestPerformanceMetric> metricsList = new ArrayList<>();
+    int additionalThreads = 0;
 
     // Start the data generator thread
     Thread dataGenerator = new Thread(new LiftRideGenerator(eventQueue, TOTAL_REQUESTS));
     dataGenerator.start();
 
     // Use ExecutorService with dynamic thread management (or use ThreadPoolExecutor?)
-    ExecutorService executor = Executors.newFixedThreadPool(MAXIMUM_THREADS);
+    ExecutorService executor = Executors.newFixedThreadPool(INITIAL_THREADS + REMAINING_THREADS);
 
     // Track start time
     long startTime = System.currentTimeMillis();
@@ -45,13 +48,18 @@ public class MultiThreadsClient2 {
       executor.submit(new LiftRidePostWorker(eventQueue, REQUESTS_PER_THREAD, requestCounter, metricsList));
     }
 
-    // Calculate remaining requests and start additional threads
-    int remainingRequests = TOTAL_REQUESTS - (INITIAL_THREADS * REQUESTS_PER_THREAD);
-    while (remainingRequests > 0) {
-      int requestsForThread = Math.min(REQUESTS_PER_THREAD, remainingRequests);
-      executor.submit(new LiftRidePostWorker(eventQueue, requestsForThread, requestCounter, metricsList));
-      remainingRequests -= requestsForThread;
+    // Next 64 threads, each sending 2000 POST requests for the remaining 168,000 requests
+    for (int i = 0; i < REMAINING_THREADS; i++) {
+      executor.submit(new LiftRidePostWorker(eventQueue, REQUESTS_PER_REMAINING_THREAD, requestCounter, metricsList));
     }
+    // Calculate remaining requests and start additional threads
+//    int remainingRequests = TOTAL_REQUESTS - (INITIAL_THREADS * REQUESTS_PER_THREAD);
+//    while (remainingRequests > 0) {
+//      int requestsForThread = Math.min(REQUESTS_PER_THREAD, remainingRequests);
+//      executor.submit(new LiftRidePostWorker(eventQueue, requestsForThread, requestCounter, metricsList));
+//      additionalThreads++;
+//      remainingRequests -= requestsForThread;
+//    }
 
     // Shutdown the executor and wait for completion
     executor.shutdown();
@@ -68,7 +76,7 @@ public class MultiThreadsClient2 {
         requestCounter.getSuccessfulRequests(),
         requestCounter.getFailedRequests(),
         totalTimeSeconds,
-        TOTAL_REQUESTS, INITIAL_THREADS, REQUESTS_PER_THREAD, LIFT_RIDE_QUEUE_SIZE
+        TOTAL_REQUESTS, INITIAL_THREADS, REQUESTS_PER_THREAD, LIFT_RIDE_QUEUE_SIZE, additionalThreads
     );
     ReportPrinter.printDetailResult(metricsList);
     ReportPrinter.writeMetricsToCSV("request_metrics.csv", metricsList);

@@ -29,14 +29,9 @@ public class LiftRideGenerator implements Runnable {
         queue.put(event);
         generatedCount++;
 
-        // Log the queue size every 1000 events
-//        if (generatedCount % 1000 == 0) {
-//          System.out.println("Generated " + generatedCount + " events. Current queue size: " + queue.size());
-//        }
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      //System.out.println("Total events generated: " + generatedCount);
     }
   }
 }
