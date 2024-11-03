@@ -20,8 +20,8 @@ public class MultiThreadsClient2 {
   private static final int INITIAL_THREADS = 32;
   private static final int MAXIMUM_THREADS = 200;
   private static final int REQUESTS_PER_THREAD = 1000;
-  private static final int REMAINING_THREADS = 84;
-  private static final int REQUESTS_PER_REMAINING_THREAD = 2000;
+  private static final int REMAINING_THREADS = 200;
+  private static final int REQUESTS_PER_REMAINING_THREAD = 840;
   private static final int LIFT_RIDE_QUEUE_SIZE = 50_000; // adjust it base on performance
 
   /**
@@ -31,7 +31,7 @@ public class MultiThreadsClient2 {
     BlockingQueue<LiftRideEvent> eventQueue = new ArrayBlockingQueue<>(LIFT_RIDE_QUEUE_SIZE);
     RequestCounter requestCounter = new RequestCounter();
     List<RequestPerformanceMetric> metricsList = new ArrayList<>();
-    int additionalThreads = 0;
+    //int additionalThreads = 0;
 
     // Start the data generator thread
     Thread dataGenerator = new Thread(new LiftRideGenerator(eventQueue, TOTAL_REQUESTS));
@@ -76,7 +76,7 @@ public class MultiThreadsClient2 {
         requestCounter.getSuccessfulRequests(),
         requestCounter.getFailedRequests(),
         totalTimeSeconds,
-        TOTAL_REQUESTS, INITIAL_THREADS, REQUESTS_PER_THREAD, LIFT_RIDE_QUEUE_SIZE, additionalThreads
+        TOTAL_REQUESTS, INITIAL_THREADS, REQUESTS_PER_THREAD, LIFT_RIDE_QUEUE_SIZE, REMAINING_THREADS
     );
     ReportPrinter.printDetailResult(metricsList);
     ReportPrinter.writeMetricsToCSV("request_metrics.csv", metricsList);
