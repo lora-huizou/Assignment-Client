@@ -52,14 +52,6 @@ public class MultiThreadsClient2 {
     for (int i = 0; i < REMAINING_THREADS; i++) {
       executor.submit(new LiftRidePostWorker(eventQueue, REQUESTS_PER_REMAINING_THREAD, requestCounter, metricsList));
     }
-    // Calculate remaining requests and start additional threads
-//    int remainingRequests = TOTAL_REQUESTS - (INITIAL_THREADS * REQUESTS_PER_THREAD);
-//    while (remainingRequests > 0) {
-//      int requestsForThread = Math.min(REQUESTS_PER_THREAD, remainingRequests);
-//      executor.submit(new LiftRidePostWorker(eventQueue, requestsForThread, requestCounter, metricsList));
-//      additionalThreads++;
-//      remainingRequests -= requestsForThread;
-//    }
 
     // Shutdown the executor and wait for completion
     executor.shutdown();
@@ -82,5 +74,4 @@ public class MultiThreadsClient2 {
     ReportPrinter.writeMetricsToCSV("request_metrics.csv", metricsList);
     ReportPrinter.calculateThroughputFromMetrics(metricsList, "throughput_data.csv");
   }
-
 }
